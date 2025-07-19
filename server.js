@@ -24,10 +24,14 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 io.on("connection", (socket) => {
-  socket.on("message", ({ text, user, date }) => {
+  io.emit("online", io.of("/").sockets.size);
+  socket.on("disconnect", () => {
+    io.emit("online", io.of("/").sockets.size);
+  });
+  socket.on("message", ({ text, user }) => {
     app.render(
       "partials/message",
-      { text, user, date, layout: false },
+      { text, user, layout: false },
       (err, html) => {
         if (err) return console.error(err);
         io.emit("message", html);

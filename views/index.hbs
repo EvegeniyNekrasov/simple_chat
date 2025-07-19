@@ -1,4 +1,5 @@
 <div x-data="chatComponent" class="p-10 flex flex-col gap-2">
+  <h1>People connected: <span x-text="online"></span></h1>
   <ul id="messages" x-ref="messages" class="flex flex-col gap-4"></ul>
   <form x-on:submit.prevent="sendMessage">
     <input

@@ -1,6 +1,7 @@
 document.addEventListener("alpine:init", () => {
   Alpine.data("chatComponent", () => ({
     message: "",
+    count: 0,
     user: sessionStorage.getItem("username") || "",
     date: new Intl.DateTimeFormat("en-US", {
       dateStyle: "medium",
@@ -15,6 +16,10 @@ document.addEventListener("alpine:init", () => {
       }
 
       this.socket = io();
+
+      this.socket.on("online", (n) => {
+        this.online = n;
+      });
       this.socket.on("message", (html) => {
         this.$refs.messages.insertAdjacentHTML("beforeend", html);
 
