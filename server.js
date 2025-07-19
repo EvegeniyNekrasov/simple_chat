@@ -24,10 +24,20 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 io.on("connection", (socket) => {
+  let username = socket.handshake.auth.user;
+
   io.emit("online", io.of("/").sockets.size);
+
+  socket.on("typing", ({ user, typing }) => {
+    socket.broadcast.emit("typing", { user, typing });
+  });
+
   socket.on("disconnect", () => {
     io.emit("online", io.of("/").sockets.size);
+
+    socket.broadcast.emit("user-left", username);
   });
+
   socket.on("message", ({ text, user, date }) => {
     app.render(
       "partials/message",

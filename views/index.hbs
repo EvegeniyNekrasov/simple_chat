@@ -1,9 +1,18 @@
 <div x-data="chatComponent" class="p-10 flex flex-col gap-2">
   <h1>People connected: <span x-text="online"></span></h1>
   <ul id="messages" x-ref="messages" class="flex flex-col gap-4"></ul>
+  <p x-show="typingUsers.length">
+    <template x-for="(u, i) in typingUsers" :key="u">
+      <span
+        x-text="i ? (i === typingUsers.length - 1 ? ' and ' : ', ') + u : u"
+      ></span>
+    </template>
+    <span> typing...</span>
+  </p>
   <form x-on:submit.prevent="sendMessage">
     <input
       x-model="message"
+      @keydown="handleTyping"
       type="text"
       placeholder="Type a message..."
       autocomplete="off"

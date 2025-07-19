@@ -2,12 +2,28 @@ document.addEventListener("alpine:init", () => {
   Alpine.data("chatComponent", () => ({
     message: "",
     count: 0,
+    online: 0,
     user: sessionStorage.getItem("username") || "",
     date: new Intl.DateTimeFormat("en-US", {
       dateStyle: "medium",
       timeStyle: "short",
     }).format(new Date()),
     socket: null,
+    typing: false,
+    typingTimeout: null,
+    typingUsers: [],
+
+    handleTyping() {
+      if (!this.typing) {
+        this.typing = true;
+        this.socket.emit("typing", { user: this.user, typing: true });
+      }
+      clearTimeout(this.typingTimeout);
+      this.typingTimeout = setTimeout(() => {
+        this.typing = false;
+        this.socket.emit("typing", { user: this.user, typing: false });
+      }, 250);
+    },
 
     init() {
       if (!this.user.trim()) {
@@ -15,11 +31,24 @@ document.addEventListener("alpine:init", () => {
         sessionStorage.setItem("username", this.user);
       }
 
-      this.socket = io();
+      this.socket = io({ auth: { user: this.user } });
+
+      this.socket.on("typing", ({ user, typing }) => {
+        if (typing) {
+          if (!this.typingUsers.includes(user)) this.typingUsers.push(user);
+        } else {
+          this.typingUsers = this.typingUsers.filter((u) => u !== user);
+        }
+      });
 
       this.socket.on("online", (n) => {
         this.online = n;
       });
+
+      this.socket.on("user-left", (user) => {
+        this.typingUsers = this.typingUsers.filter((u) => u !== user);
+      });
+
       this.socket.on("message", (html) => {
         this.$refs.messages.insertAdjacentHTML("beforeend", html);
 
