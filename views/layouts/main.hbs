@@ -1,9 +1,18 @@
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<title>Simple chat</title>
-	</head>
-	<body>
-		{{{ body }}}
-	</body>
-<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Group Chat</title>
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="https://unpkg.com/htmx.org@2.0.6"></script>
+        <script src="/js/chat.js"></script>
+        <script
+            defer
+            src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+        ></script>
+    </head>
+    <body class="w-full h-screen">
+        <main class="flex flex-col gap-2 w-full h-full">
+            {{{body}}}
+        </main>
+    </body>
+</html>

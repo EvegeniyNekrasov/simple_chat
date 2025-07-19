@@ -3,6 +3,7 @@ import { Server } from "socket.io";
 import path from "node:path";
 import http from "node:http";
 import * as hb from "express-handlebars";
+import "dotenv/config";
 
 const dirname = import.meta.dirname;
 
@@ -19,4 +20,20 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
-app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
+const server = http.createServer(app);
+const io = new Server(server);
+
+io.on("connection", (socket) => {
+  socket.on("message", ({ text, user }) => {
+    app.render(
+      "partials/message",
+      { text, user, layout: false },
+      (err, html) => {
+        if (err) return console.error(err);
+        io.emit("message", html);
+      },
+    );
+  });
+});
+
+server.listen(PORT, () => console.log(`http://localhost:${PORT}`));
