@@ -14,7 +14,7 @@ app.set("views", path.join(dirname, "views"));
 
 app.use(express.static(path.join(dirname, "public")));
 
-const PORT = 6969;
+const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
   res.render("index");
