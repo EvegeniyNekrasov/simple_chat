@@ -1,12 +1,12 @@
-<div x-data="chatComponent">
-	<ul id="messages" x-ref="messages"></ul>
-	<form x-on:submit.prevent="sendMessage">
-		<input 
-			x-model="message"
-			type="text" 
-			placeholder="Type a message..." 
-			autocomplete="off" 
-		/>
-		<button type="submit">Send</button>
-	</form>
+<div x-data="chatComponent" class="p-10 flex flex-col gap-2">
+  <ul id="messages" x-ref="messages" class="flex flex-col gap-4"></ul>
+  <form x-on:submit.prevent="sendMessage">
+    <input
+      x-model="message"
+      type="text"
+      placeholder="Type a message..."
+      autocomplete="off"
+    />
+    <button type="submit">Send</button>
+  </form>
 </div>

@@ -2,6 +2,10 @@ document.addEventListener("alpine:init", () => {
   Alpine.data("chatComponent", () => ({
     message: "",
     user: sessionStorage.getItem("username") || "",
+    date: new Intl.DateTimeFormat("en-US", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    }).format(new Date()),
     socket: null,
 
     init() {
@@ -13,6 +17,18 @@ document.addEventListener("alpine:init", () => {
       this.socket = io();
       this.socket.on("message", (html) => {
         this.$refs.messages.insertAdjacentHTML("beforeend", html);
+
+        const messageEl = this.$refs.messages.lastElementChild;
+        const avatarBox = messageEl.querySelector("#avatar");
+        const username = messageEl.querySelector("strong").textContent.trim();
+
+        const url = `https://api.dicebear.com/9.x/bottts/svg?seed=${encodeURIComponent(username)}&size=28`;
+        fetch(url)
+          .then((r) => r.text())
+          .then((svg) => {
+            avatarBox.outerHTML = svg;
+          })
+          .catch(console.error);
         this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight;
       });
     },
@@ -20,7 +36,11 @@ document.addEventListener("alpine:init", () => {
       const txt = this.message.trim();
       if (!txt) return;
 
-      this.socket.emit("message", { text: txt, user: this.user });
+      this.socket.emit("message", {
+        text: txt,
+        user: this.user,
+        date: this.date,
+      });
       this.message = "";
     },
   }));
