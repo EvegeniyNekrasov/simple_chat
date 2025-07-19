@@ -25,7 +25,9 @@ document.addEventListener("alpine:init", () => {
 
         const messageEl = this.$refs.messages.lastElementChild;
         const avatarBox = messageEl.querySelector("#avatar");
-        const username = messageEl.querySelector("strong").textContent.trim();
+        const username = messageEl
+          .querySelector("span[data-element='user']")
+          .textContent.trim();
 
         const url = `https://api.dicebear.com/9.x/bottts/svg?seed=${encodeURIComponent(username)}&size=28`;
         fetch(url)

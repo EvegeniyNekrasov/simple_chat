@@ -1,12 +1,12 @@
 <li>
-  <div class="flex flex-col gap-2 p-2 bg-zinc-200">
-    <div class="flex gap-2 items-center">
-      <svg id="avatar" aria-hidden="true"></svg>
-      <strong>
-        {{user}}
-      </strong>
-      <span>{{date}}</span>
+  <div class="flex flex-col gap-1">
+    <div class="flex gap-2 items-center items-baseline-last">
+      <svg id="avatar"></svg>
+      <span data-element="user" class="font-bold text-sky-800">{{user}}</span>
+      <span class="text-sm text-zinc-500">{{date}}</span>
     </div>
-    {{{text}}}
+    <span class="pl-[36px] text-[14px]">
+      {{{text}}}
+    </span>
   </div>
 </li>

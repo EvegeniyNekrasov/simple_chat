@@ -28,10 +28,10 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     io.emit("online", io.of("/").sockets.size);
   });
-  socket.on("message", ({ text, user }) => {
+  socket.on("message", ({ text, user, date }) => {
     app.render(
       "partials/message",
-      { text, user, layout: false },
+      { text, user, date, layout: false },
       (err, html) => {
         if (err) return console.error(err);
         io.emit("message", html);

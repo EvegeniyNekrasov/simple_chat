@@ -2,6 +2,12 @@
   <head>
     <meta charset="UTF-8" />
     <title>Group Chat</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://unpkg.com/htmx.org@2.0.6"></script>
     <script src="/js/chat.js"></script>
@@ -12,6 +18,12 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4">
     </script>
   </head>
+  <style>
+    body {
+      font-family: "IBM Plex Sans", sans-serif;
+      font-style: normal;
+    }
+  </style>
   <body class="w-full h-screen">
     <main class="flex flex-col gap-2 w-full h-full">
       {{{body}}}
