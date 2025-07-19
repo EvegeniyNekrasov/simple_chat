@@ -1,0 +1,27 @@
+{
+	"name": "simple_chat",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"dev": "node --watch server.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/EvegeniyNekrasov/simple_chat.git"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "MIT",
+	"type": "module",
+	"bugs": {
+		"url": "https://github.com/EvegeniyNekrasov/simple_chat/issues"
+	},
+	"homepage": "https://github.com/EvegeniyNekrasov/simple_chat#readme",
+	"description": "",
+	"dependencies": {
+		"dotenv": "^17.2.0",
+		"express": "^5.1.0",
+		"express-handlebars": "^8.0.2",
+		"socket.io": "^4.8.1"
+	}
+}
