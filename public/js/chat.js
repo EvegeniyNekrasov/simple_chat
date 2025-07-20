@@ -3,15 +3,13 @@ document.addEventListener("alpine:init", () => {
     message: "",
     count: 0,
     online: 0,
-    user: sessionStorage.getItem("username") || "",
-    date: new Intl.DateTimeFormat("en-US", {
-      dateStyle: "medium",
-      timeStyle: "short",
-    }).format(new Date()),
+    user: "",
     socket: null,
     typing: false,
     typingTimeout: null,
     typingUsers: [],
+    replyTo: null,
+    highlighted: null,
 
     handleTyping() {
       if (!this.typing) {
@@ -26,10 +24,7 @@ document.addEventListener("alpine:init", () => {
     },
 
     init() {
-      if (!this.user.trim()) {
-        this.user = prompt("What is your name?") || "Incognito";
-        sessionStorage.setItem("username", this.user);
-      }
+      this.user = prompt("What is your name?") || "Incognito";
 
       this.socket = io({ auth: { user: this.user } });
 
@@ -57,27 +52,67 @@ document.addEventListener("alpine:init", () => {
         const username = messageEl
           .querySelector("span[data-element='user']")
           .textContent.trim();
-
-        const url = `https://api.dicebear.com/9.x/bottts/svg?seed=${encodeURIComponent(username)}&size=28`;
+        const url = `https://api.dicebear.com/9.x/pixel-art/svg?seed=${encodeURIComponent(username)}&size=28`;
         fetch(url)
           .then((r) => r.text())
           .then((svg) => {
             avatarBox.outerHTML = svg;
           })
           .catch(console.error);
+        const isSelf = username === this.user;
+        messageEl.classList.add(
+          ...(isSelf
+            ? ["self-start", "text-left"]
+            : ["self-end", "text-right"]),
+        );
         this.$refs.messages.scrollTop = this.$refs.messages.scrollHeight;
+        this.$refs.messages.addEventListener("click", (e) => {
+          const li = e.target.closest("li[data-id]");
+          if (!li) return;
+
+          if (li.dataset.user === this.user) return;
+
+          this.highlight(li);
+
+          this.replyTo = {
+            id: li.dataset.id,
+            user: li.dataset.user,
+            text: li.dataset.text,
+          };
+
+          this.$refs.replyPreview.innerText = `${this.replyTo.user}: ${this.replyTo.text}`;
+          this.$refs.replyPreview.hidden = false;
+        });
       });
+    },
+
+    highlight(li) {
+      if (this.highlighted) this.highlighted.classList.remove("bg-zinc-100");
+      li.classList.add("bg-zinc-100");
+      this.highlighted = li;
     },
     sendMessage() {
       const txt = this.message.trim();
       if (!txt) return;
 
-      this.socket.emit("message", {
+      const msg = {
+        id: Date.now().toString(),
         text: txt,
         user: this.user,
-        date: this.date,
-      });
+        date: new Intl.DateTimeFormat("en-US", {
+          dateStyle: "medium",
+          timeStyle: "short",
+        }).format(new Date()),
+        replyTo: this.replyTo,
+      };
+
+      this.socket.emit("message", msg);
       this.message = "";
+
+      this.replyTo = null;
+      this.$refs.replyPreview.hidden = true;
+      if (this.highlighted) this.highlighted.classList.remove("bg-zinc-100");
+      this.highlighted = null;
     },
   }));
 });

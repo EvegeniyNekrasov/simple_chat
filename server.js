@@ -38,15 +38,11 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("user-left", username);
   });
 
-  socket.on("message", ({ text, user, date }) => {
-    app.render(
-      "partials/message",
-      { text, user, date, layout: false },
-      (err, html) => {
-        if (err) return console.error(err);
-        io.emit("message", html);
-      },
-    );
+  socket.on("message", (msg) => {
+    app.render("partials/message", { ...msg, layout: false }, (err, html) => {
+      if (err) return console.error(err);
+      io.emit("message", html);
+    });
   });
 });
 

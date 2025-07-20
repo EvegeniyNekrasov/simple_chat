@@ -1,4 +1,7 @@
-<div x-data="chatComponent" class="p-10 flex flex-col gap-2">
+<div
+  x-data="chatComponent"
+  class="p-10 flex flex-col gap-2 w-4xl m-auto h-full p-2 bg-zinc-200"
+>
   <h1>People connected: <span x-text="online"></span></h1>
   <ul id="messages" x-ref="messages" class="flex flex-col gap-4"></ul>
   <p x-show="typingUsers.length">
@@ -9,6 +12,11 @@
     </template>
     <span> typing...</span>
   </p>
+  <p
+    x-ref="replyPreview"
+    hidden
+    class="text-sm text-zinc-600 border-1-2 pl-2 mb-2"
+  ></p>
   <form x-on:submit.prevent="sendMessage">
     <input
       x-model="message"

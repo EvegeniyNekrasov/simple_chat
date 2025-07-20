@@ -1,12 +1,21 @@
-<li>
-  <div class="flex flex-col gap-1">
-    <div class="flex gap-2 items-center items-baseline-last">
-      <svg id="avatar"></svg>
-      <span data-element="user" class="font-bold text-sky-800">{{user}}</span>
-      <span class="text-sm text-zinc-500">{{date}}</span>
-    </div>
-    <span class="pl-[36px] text-[14px]">
-      {{{text}}}
-    </span>
+<li
+  data-id="{{id}}"
+  data-user="{{user}}"
+  data-text="{{{text}}}"
+  class="flex flex-col gap-1 cursor-pointer"
+>
+  <div class="flex gap-2 items-center">
+    <svg class="w-4 h-4" id="avatar"></svg>
+    <span data-element="user" class="font-bold text-sky-800">{{user}}</span>
+    <span class="text-sm text-zinc-500">{{date}}</span>
   </div>
+
+  {{#if replyTo}}
+    <div class="pl-2 border-l-2 border-zinc-300">
+      <span class="text-xs font-semibold">{{replyTo.user}}:</span>
+      <span class="text-xs text-zinc-600">{{replyTo.text}}</span>
+    </div>
+  {{/if}}
+
+  <span class="text-[14px]">{{{text}}}</span>
 </li>
