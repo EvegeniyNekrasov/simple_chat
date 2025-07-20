@@ -1,9 +1,16 @@
 <div
   x-data="chatComponent"
-  class="p-10 flex flex-col gap-2 w-4xl m-auto h-full p-2 bg-zinc-200"
+  class="p-10 flex flex-col gap-2 w-4xl m-auto h-full p-2 bg-zinc-100"
 >
-  <h1>People connected: <span x-text="online"></span></h1>
-  <ul id="messages" x-ref="messages" class="flex flex-col gap-4"></ul>
+  <div class="flex items-center justify-between gap-1">
+    <h1>People connected: <span x-text="online"></span></h1>
+    <p>Total messages in chat: <span x-text="totalMessages"></span></p>
+  </div>
+  <ul
+    id="messages"
+    x-ref="messages"
+    class="flex flex-col gap-4 w-gull h-full overflow-auto"
+  ></ul>
   <p x-show="typingUsers.length">
     <template x-for="(u, i) in typingUsers" :key="u">
       <span
@@ -17,14 +24,21 @@
     hidden
     class="text-sm text-zinc-600 border-1-2 pl-2 mb-2"
   ></p>
-  <form x-on:submit.prevent="sendMessage">
+  <form
+    x-on:submit.prevent="sendMessage"
+    class="mt-auto flex items-center gap-2"
+  >
     <input
       x-model="message"
       @keydown="handleTyping"
       type="text"
       placeholder="Type a message..."
       autocomplete="off"
+      class="w-full bg-white px-4 py-2 rounded ouline-none focus:outline-none focus:border-1"
     />
-    <button type="submit">Send</button>
+    <button
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      type="submit"
+    >Send</button>
   </form>
 </div>

@@ -10,6 +10,7 @@ document.addEventListener("alpine:init", () => {
     typingUsers: [],
     replyTo: null,
     highlighted: null,
+    totalMessages: 0,
 
     handleTyping() {
       if (!this.typing) {
@@ -52,7 +53,7 @@ document.addEventListener("alpine:init", () => {
         const username = messageEl
           .querySelector("span[data-element='user']")
           .textContent.trim();
-        const url = `https://api.dicebear.com/9.x/pixel-art/svg?seed=${encodeURIComponent(username)}&size=28`;
+        const url = `https://api.dicebear.com/9.x/fun-emoji/svg?seed=${encodeURIComponent(username)}&size=28`;
         fetch(url)
           .then((r) => r.text())
           .then((svg) => {
@@ -108,6 +109,7 @@ document.addEventListener("alpine:init", () => {
 
       this.socket.emit("message", msg);
       this.message = "";
+      this.totalMessages++;
 
       this.replyTo = null;
       this.$refs.replyPreview.hidden = true;
