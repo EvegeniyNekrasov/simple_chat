@@ -3,7 +3,7 @@
 A minimal real‑time chat skeleton built with **Express.js**, **HTMX**, **Alpine.js**, **Handlebars**, and **Tailwind CSS**.  The initial release focuses on a clean project structure you can fork or extend for side projects, coding interviews, or learning modern progressive‑enhancement workflows.
 
 <div align="center">
-  <img alt="Project screenshot" src="docs/todo..." width="600"/>
+  <img alt="Project screenshot" src="docs/captura_app.png" />
 </div>
 
 > **Status:** early prototype – core plumbing is in place, but functionality is intentionally lean to encourage experimentation.
